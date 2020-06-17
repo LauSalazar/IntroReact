@@ -1,25 +1,45 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {Fragment, useState} from 'react';
+import Header from './components/Header.js';
+import Formulario from './components/Formulario.js';
+import Mensaje from './components/Mensaje.js';
+import Resultado from './components/Resultado.js';
+import Spinner from './components/Spinner.js';
 
 function App() {
+  const [cantidad, guardarCantidad] = useState(0);
+  const [plazo, guardarPlazo] = useState('');
+  const [total, guardarTotal] = useState(0);
+  const [cargando, guardarCargando] = useState(false);
+  let componente;
+  if(cargando){
+    componente = <Spinner></Spinner>
+  } else if(total ===0){
+    componente = <Mensaje></Mensaje>
+  }else{
+    componente = <Resultado
+                    total={total}
+                    plazo={plazo}
+                    cantidad={cantidad}
+                ></Resultado>
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    <Fragment>
+      <Header titulo="Cotizador"/>
+      <div className="container">
+        <Formulario
+        cantidad={cantidad}
+        guardarCantidad={guardarCantidad}
+        plazo={plazo}
+        guardarPlazo={guardarPlazo}
+        guardarTotal={guardarTotal}
+        guardarCargando={guardarCargando}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
+        </Formulario> 
+        <div className="resultado">
+            {componente}
+          </div>
+      </div>      
+    </Fragment>
   );
 }
 
